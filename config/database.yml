@@ -20,6 +20,11 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: caller-db # Ensure this matches your docker-compose service name
+  port: 5432
+  timeout: 5000
 
 development:
   <<: *default
@@ -83,4 +88,4 @@ production:
   <<: *default
   database: caller_sim2_production
   username: caller_sim2
-  password: <%= ENV["CALLER_SIM2_DATABASE_PASSWORD"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
