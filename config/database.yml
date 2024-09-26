@@ -28,6 +28,8 @@ default: &default
 development:
   <<: *default
   database: caller_sim2_development
+  username: caller_sim2
+  password: caller_sim2_password
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -62,6 +64,8 @@ development:
 test:
   <<: *default
   database: caller_sim2_test
+  username: caller_sim2
+  password: caller_sim2_password
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
