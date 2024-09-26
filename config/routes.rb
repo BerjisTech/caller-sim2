@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'home/index'
+  get 'home/about'
+  get 'home/contact'
+  get 'home/faq'
+  get 'home/terms'
+  get 'home/support'
+  get 'home/privacy'
   # devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
