@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_26_191701) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_26_194338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "media_streams", force: :cascade do |t|
+  create_table "media_streams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "stream_data"
-    t.bigint "profile_id", null: false
+    t.uuid "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_media_streams_on_profile_id"
   end
 
-  create_table "profiles", force: :cascade do |t|
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "user_id"
     t.boolean "is_anonymous"
     t.boolean "is_authenticated"
@@ -39,32 +39,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_191701) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "room_members", force: :cascade do |t|
+  create_table "room_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "is_admin"
-    t.bigint "room_id", null: false
-    t.bigint "profile_id", null: false
+    t.uuid "room_id", null: false
+    t.uuid "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_room_members_on_profile_id"
     t.index ["room_id"], name: "index_room_members_on_room_id"
   end
 
-  create_table "room_message_reactions", force: :cascade do |t|
+  create_table "room_message_reactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "reaction"
-    t.bigint "room_message_id", null: false
-    t.bigint "profile_id", null: false
+    t.uuid "room_message_id", null: false
+    t.uuid "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_room_message_reactions_on_profile_id"
     t.index ["room_message_id"], name: "index_room_message_reactions_on_room_message_id"
   end
 
-  create_table "room_messages", force: :cascade do |t|
+  create_table "room_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "content"
     t.boolean "is_edited"
     t.boolean "is_deleted"
-    t.bigint "room_id", null: false
-    t.bigint "profile_id", null: false
+    t.uuid "room_id", null: false
+    t.uuid "profile_id", null: false
     t.integer "reply_to_id"
     t.integer "quoted_message_id"
     t.datetime "created_at", null: false
@@ -73,20 +73,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_191701) do
     t.index ["room_id"], name: "index_room_messages_on_room_id"
   end
 
-  create_table "rooms", force: :cascade do |t|
+  create_table "rooms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "seats"
     t.boolean "is_private"
     t.string "password"
     t.boolean "is_active"
-    t.bigint "profile_id", null: false
+    t.uuid "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_rooms_on_profile_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
