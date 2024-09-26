@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  is_edited: false
+  is_deleted: false
+  room: one
+  profile: one
+  reply_to_id: 1
+  quoted_message_id: 1
+
+two:
+  content: MyText
+  is_edited: false
+  is_deleted: false
+  room: two
+  profile: two
+  reply_to_id: 1
+  quoted_message_id: 1

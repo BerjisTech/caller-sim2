@@ -52,8 +52,8 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
 
-gem "mutex_m", "~> 0.2.0"
+gem 'mutex_m', '~> 0.2.0'
 
-gem "bigdecimal", "~> 3.1"
+gem 'bigdecimal', '~> 3.1'
 
-gem "ostruct", "~> 0.6.0"
+gem 'ostruct', '~> 0.6.0'

@@ -24,4 +24,12 @@ Rails.application.routes.draw do
                        sessions: 'users/sessions',
                        registrations: 'users/registrations'
                      }
+
+  resources :rooms do
+    resources :room_members
+    resources :room_messages do
+      resources :room_message_reactions
+    end
+  end
+  resources :media_streams
 end
