@@ -22,7 +22,6 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
-  host: caller-db # Ensure this matches your docker-compose service name
   port: 5432
   timeout: 5000
 
@@ -89,3 +88,4 @@ production:
   database: caller_sim2_production
   username: caller_sim2
   password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: caller-db # Ensure this matches your docker-compose service name
