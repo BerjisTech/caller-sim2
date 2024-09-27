@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'home/support'
   get 'home/privacy'
 
+  root to: 'home#index'
+
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
                                  sign_out: 'logout',
@@ -19,20 +21,21 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations'
                      }
 
-  resources :rooms, only: %i[index create] do
-    member do
-      get :room
-      patch :update_room
-      get :members
-      get :messages
-      get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
-      post :add_member
-    end
+  namespace :api do
+    resources :rooms, only: %i[index create] do
+      member do
+        get :room
+        patch :update_room
+        get :members
+        get :messages
+        get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
+        post :add_member
+      end
 
-    collection do
-      get :room_by_tags
+      collection do
+        get :room_by_tags
+      end
     end
+    resources :media_streams
   end
-
-  resources :media_streams
 end
