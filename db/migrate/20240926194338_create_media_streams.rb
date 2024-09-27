@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMediaStreams < ActiveRecord::Migration[7.0]
   def change
     create_table :media_streams, id: :uuid do |t|

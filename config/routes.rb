@@ -8,13 +8,7 @@ Rails.application.routes.draw do
   get 'home/terms'
   get 'home/support'
   get 'home/privacy'
-  # devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
-
-  # Make /api to be root
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
                                  sign_out: 'logout',
@@ -25,11 +19,20 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations'
                      }
 
-  resources :rooms do
-    resources :room_members
-    resources :room_messages do
-      resources :room_message_reactions
+  resources :rooms, only: %i[index create] do
+    member do
+      get :room
+      patch :update_room
+      get :members
+      get :messages
+      get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
+      post :add_member
+    end
+
+    collection do
+      get :room_by_tags
     end
   end
+
   resources :media_streams
 end

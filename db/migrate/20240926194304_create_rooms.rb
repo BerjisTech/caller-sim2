@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRooms < ActiveRecord::Migration[7.0]
   def change
     create_table :rooms, id: :uuid do |t|
@@ -7,6 +9,7 @@ class CreateRooms < ActiveRecord::Migration[7.0]
       t.boolean :is_private
       t.string :password
       t.boolean :is_active
+      t.string :tags, array: true, default: []
       t.references :profile, null: false, foreign_key: true, type: :uuid
 
       t.timestamps

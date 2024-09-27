@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRoomMessages < ActiveRecord::Migration[7.0]
   def change
     create_table :room_messages, id: :uuid do |t|
