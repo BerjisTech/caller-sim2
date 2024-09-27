@@ -32,7 +32,8 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :room_by_tags
+      get :tags, action: :room_by_tags
+      get :active, action: :active_rooms
     end
   end
 

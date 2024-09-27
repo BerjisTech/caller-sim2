@@ -9,6 +9,11 @@ class RoomsController < ApplicationController
     render json: @rooms
   end
 
+  def active_rooms
+    @rooms = Room.where(is_active: true)
+    render json: @rooms
+  end
+
   # /room/:id
   def room
     @room = Room.find(params[:id])
