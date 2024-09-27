@@ -21,21 +21,20 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations'
                      }
 
-  namespace :api do
-    resources :rooms, only: %i[index create] do
-      member do
-        get :room
-        patch :update_room
-        get :members
-        get :messages
-        get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
-        post :add_member
-      end
-
-      collection do
-        get :room_by_tags
-      end
+  resources :rooms, only: %i[index create] do
+    member do
+      get :room
+      patch :update_room
+      get :members
+      get :messages
+      get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
+      post :add_member
     end
-    resources :media_streams
+
+    collection do
+      get :room_by_tags
+    end
   end
+
+  resources :media_streams
 end
