@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RoomsController < ApplicationController
-  respond_to? :json
+  respond_to :json
 
   # /rooms
   def index
@@ -22,47 +22,55 @@ class RoomsController < ApplicationController
 
   # /room_by_tags?tags[]=tag1&tags[]=tag2
   def room_by_tags
-    # Find a room that most likely matches tag array string[] provided
-    @room = Room.where('tags @> ARRAY[?]::varchar[]', params[:tags])
-    render json: @room
+    # Ensure tags are passed correctly as an array
+    tags_array = params[:tags].is_a?(String) ? params[:tags].split(',') : params[:tags]
+  
+    # Find rooms that contain any of the provided tags
+    @rooms = Room.where('tags && ARRAY[?]::varchar[]', tags_array)
+  
+    render json: @rooms
   end
 
   # /room/new
-  def create_room
-    @room = Room.new(room_params)
+  def create
+    # Step 1: Create or find the profile for the room host
+    profile = create_or_fetch_profile(room_host_params)
+    
+    # Step 2: Create the room, assigning the profile (room creator)
+    @room = Room.new(room_params.merge(profile_id: profile.id))
+
     if @room.save
-      create_profile_and_member(@room)
-      render json: @room
+      render json: @room, status: :created
     else
-      render json: { error: 'Unable to create room' }, status: 400
+      render json: { error: @room.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   # /room/:id/update
-  def update_room
+  def update
     @room = Room.find(params[:id])
     if @room.update(room_params)
       render json: @room
     else
-      render json: { error: 'Unable to update room' }, status: 400
+      render json: { error: 'Unable to update room' }, status: :unprocessable_entity
     end
   end
 
-  # /room/:id/members
+  # /rooms/:id/members
   def members
     @room = Room.find(params[:id])
     @members = @room.room_members
     render json: @members
   end
 
-  # /room/:id/messages
+  # /rooms/:id/messages
   def messages
     @room = Room.find(params[:id])
     @messages = @room.room_messages
     render json: @messages
   end
 
-  # /room/:id/messages/:id/reactions
+  # /rooms/:id/messages/:id/reactions
   def message_reactions
     @room = Room.find(params[:id])
     @message = @room.room_messages.find(params[:message_id])
@@ -70,21 +78,37 @@ class RoomsController < ApplicationController
     render json: @reactions
   end
 
-  # /room/:id/add_member
+  # /rooms/:id/add_member
   def add_member
     @room = Room.find(params[:id])
-    create_profile_and_member(@room)
+    create_profile_and_member(@room, params[:profile])
     render json: { message: 'Member added successfully' }
   end
 
   private
 
-  def room_params
-    params.require(:room).permit(:name, :tags)
+  # Permitted params for room creation
+  def room_host_params
+    params.require(:room_host).permit(:user_id, :name, :email, :phone_number, :other_profile_fields)
   end
 
-  def create_profile_and_member(room)
-    profile = Profile.find_or_create_by(user_id: current_user.id)
-    RoomMember.create(room:, profile:)
+  # Permit the required room fields
+  def room_params
+    params.require(:room_data).permit(
+      :name,
+      :description,
+      :seats,
+      :is_private,
+      :password,
+      :is_active,
+      tags: []
+    )
+  end
+
+  # Create a profile and add the member to the room
+  def create_or_fetch_profile(room_host_data)
+    Profile.find_or_create_by(user_id: room_host_data[:user_id]) do |profile|
+      profile.assign_attributes(room_host_data)
+    end
   end
 end

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations'
                      }
 
+  resources :profiles, only: %i[show create update destroy]
   resources :rooms, only: %i[index create] do
     member do
       get :room
