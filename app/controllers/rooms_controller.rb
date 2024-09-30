@@ -14,10 +14,13 @@ class RoomsController < ApplicationController
     render json: @rooms
   end
 
-  # /room/:id
-  def room
-    @room = Room.find(params[:id])
-    render json: @room
+  def show
+    @room = Room.find_by(id: params[:id]) || Room.find_by(name: params[:id])
+    if @room.nil?
+      render json: { error: 'Room not found' }, status: :not_found
+    else
+      render json: @room, status: :ok
+    end
   end
 
   # /room_by_tags?tags[]=tag1&tags[]=tag2

@@ -2,10 +2,15 @@
 
 class ProfilesController < ApplicationController
     respond_to :json
+
+    def index
+        @profiles = Profile.all
+        render json: @profiles
+    end
   
     # GET /profiles/:id
     def show
-      @profile = Profile.find(params[:id])
+      @profile = Profile.find_or_create_by(user_id: params[:id])
       if @profile.nil?
         render json: { error: 'Profile not found' }, status: :not_found
         else

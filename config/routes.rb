@@ -21,10 +21,9 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations'
                      }
 
-  resources :profiles, only: %i[show create update destroy]
-  resources :rooms, only: %i[index create] do
+  resources :profiles, only: %i[index show create update destroy]
+  resources :rooms, only: %i[index create show] do
     member do
-      get :room
       patch :update_room
       get :members
       get :messages
