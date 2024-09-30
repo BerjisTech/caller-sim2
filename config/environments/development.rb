@@ -69,5 +69,4 @@ Rails.application.configure do
   config.hosts << 'localhost:3006'
   config.hosts << 'localhost:8085'
   config.hosts << 'localhost:3008'
-
 end

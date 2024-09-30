@@ -27,10 +27,10 @@ class RoomsController < ApplicationController
   def room_by_tags
     # Ensure tags are passed correctly as an array
     tags_array = params[:tags].is_a?(String) ? params[:tags].split(',') : params[:tags]
-  
+
     # Find rooms that contain any of the provided tags
     @rooms = Room.where('tags && ARRAY[?]::varchar[]', tags_array)
-  
+
     render json: @rooms
   end
 
@@ -38,7 +38,7 @@ class RoomsController < ApplicationController
   def create
     # Step 1: Create or find the profile for the room host
     profile = create_or_fetch_profile(room_host_params)
-    
+
     # Step 2: Create the room, assigning the profile (room creator)
     @room = Room.new(room_params.merge(profile_id: profile.id))
 
