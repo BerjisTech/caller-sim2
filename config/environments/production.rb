@@ -85,4 +85,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Add 0.0.0.0 and nichapie.com to the list of allowed hosts
+  config.hosts << '0.0.0.0'
+  config.hosts << 'nichapie.com'
 end
