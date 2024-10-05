@@ -259,7 +259,9 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder
   jsonapi-serializer
+  jwt
   kredis
+  msgpack
   mutex_m (~> 0.2.0)
   ostruct (~> 0.6.0)
   pg (~> 1.1)
