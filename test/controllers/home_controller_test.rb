@@ -1,39 +1,39 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class HomeControllerTest < ActionDispatch::IntegrationTest
-  test 'should get index' do
+  test "should get index" do
     get home_index_url
     assert_response :success
   end
 
-  test 'should get about' do
+  test "should get about" do
     get home_about_url
     assert_response :success
   end
 
-  test 'should get contact' do
+  test "should get contact" do
     get home_contact_url
     assert_response :success
   end
 
-  test 'should get faq' do
+  test "should get faq" do
     get home_faq_url
     assert_response :success
   end
 
-  test 'should get terms' do
+  test "should get terms" do
     get home_terms_url
     assert_response :success
   end
 
-  test 'should get support' do
+  test "should get support" do
     get home_support_url
     assert_response :success
   end
 
-  test 'should get privacy' do
+  test "should get privacy" do
     get home_privacy_url
     assert_response :success
   end

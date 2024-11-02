@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'home/index'
-  get 'home/about'
-  get 'home/contact'
-  get 'home/faq'
-  get 'home/terms'
-  get 'home/support'
-  get 'home/privacy'
+  get "home/index"
+  get "home/about"
+  get "home/contact"
+  get "home/faq"
+  get "home/terms"
+  get "home/support"
+  get "home/privacy"
 
-  root to: 'home#index'
+  root to: "home#index"
 
-  devise_for :users, path: '', path_names: {
-                                 sign_in: 'login',
-                                 sign_out: 'logout',
-                                 registration: 'signup'
+  devise_for :users, path: "", path_names: {
+                                 sign_in: "login",
+                                 sign_out: "logout",
+                                 registration: "signup"
                                },
                      controllers: {
-                       sessions: 'users/sessions',
-                       registrations: 'users/registrations'
+                       sessions: "users/sessions",
+                       registrations: "users/registrations"
                      }
 
   resources :profiles, only: %i[index show create update destroy]
@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       patch :update_room
       get :members
       get :messages
-      get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions
+      get "messages/:message_id/reactions", to: "rooms#message_reactions", as: :message_reactions
       post :add_member
     end
 
