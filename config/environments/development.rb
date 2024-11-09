@@ -64,7 +64,7 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  config.hosts << 'p1hp5m3c-8089.inc1.devtunnels.ms'
+  config.hosts << "9k3cx87p-8089.inc1.devtunnels.ms"
   config.hosts << 'localhost:8089'
   config.hosts << 'localhost:3006'
   config.hosts << 'localhost:8085'
