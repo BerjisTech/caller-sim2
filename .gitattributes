@@ -7,3 +7,8 @@ db/schema.rb linguist-generated
 vendor/* linguist-vendored
 
 * text=auto
+
+* text=auto eol=lf
+*.sh text eol=lf
+*.rb text eol=lf
+Gemfile* text eol=lf
