@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
   def show
     @profile = Profile.find_or_create_by(user_id: params[:id])
     if @profile.nil?
-      render json: { error: "Profile not found" }, status: :not_found
+      render json: { error: 'Profile not found' }, status: :not_found
     else
       render json: @profile, status: :ok
     end
@@ -42,9 +42,9 @@ class ProfilesController < ApplicationController
   def destroy
     @profile = Profile.find(params[:id])
     if @profile.destroy
-      render json: { message: "Profile deleted successfully" }
+      render json: { message: 'Profile deleted successfully' }
     else
-      render json: { error: "Unable to delete profile" }, status: :unprocessable_entity
+      render json: { error: 'Unable to delete profile' }, status: :unprocessable_entity
     end
   end
 

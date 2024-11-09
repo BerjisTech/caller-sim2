@@ -17,7 +17,7 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find_by(id: params[:id]) || Room.find_by(name: params[:id])
     if @room.nil?
-      render json: { error: "Room not found" }, status: :not_found
+      render json: { error: 'Room not found' }, status: :not_found
     else
       render json: @room, status: :ok
     end
@@ -26,10 +26,10 @@ class RoomsController < ApplicationController
   # /room_by_tags?tags[]=tag1&tags[]=tag2
   def room_by_tags
     # Ensure tags are passed correctly as an array
-    tags_array = params[:tags].is_a?(String) ? params[:tags].split(",") : params[:tags]
+    tags_array = params[:tags].is_a?(String) ? params[:tags].split(',') : params[:tags]
 
     # Find rooms that contain any of the provided tags
-    @rooms = Room.where("tags && ARRAY[?]::varchar[]", tags_array)
+    @rooms = Room.where('tags && ARRAY[?]::varchar[]', tags_array)
 
     render json: @rooms
   end
@@ -55,7 +55,7 @@ class RoomsController < ApplicationController
     if @room.update(room_params)
       render json: @room
     else
-      render json: { error: "Unable to update room" }, status: :unprocessable_entity
+      render json: { error: 'Unable to update room' }, status: :unprocessable_entity
     end
   end
 
@@ -85,7 +85,7 @@ class RoomsController < ApplicationController
   def add_member
     @room = Room.find(params[:id])
     create_profile_and_member(@room, params[:profile])
-    render json: { message: "Member added successfully" }
+    render json: { message: 'Member added successfully' }
   end
 
   private
