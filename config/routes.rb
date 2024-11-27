@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :rooms, only: %i[index create show] do
     member do
       patch :update_room
+      put :update_room # Add this line for PUT requests
       get :members
       get :messages
       get 'messages/:message_id/reactions', to: 'rooms#message_reactions', as: :message_reactions

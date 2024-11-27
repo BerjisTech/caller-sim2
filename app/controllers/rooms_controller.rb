@@ -51,7 +51,7 @@ class RoomsController < ApplicationController
 
   # /room/:id/update
   def update
-    @room = Room.find_by(name: params[:id])
+    @room = Room.find_by(id: params[:id]) || Room.find_by(name: params[:id])
     if @room.update(room_params)
       render json: @room
     else
