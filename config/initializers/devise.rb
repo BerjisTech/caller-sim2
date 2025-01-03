@@ -320,4 +320,19 @@ Devise.setup do |config|
     ]
     jwt.expiration_time = 30.minutes.to_i
   end
+
+  # Google configuration
+  config.omniauth :google_oauth2,
+    ENV['GOOGLE_CLIENT_ID'],
+    ENV['GOOGLE_CLIENT_SECRET'],
+    {
+      scope: 'email,profile',
+      prompt: 'select_account'
+    }
+
+  # GitHub configuration
+  config.omniauth :github,
+    ENV['GITHUB_CLIENT_ID'],
+    ENV['GITHUB_CLIENT_SECRET'],
+    scope: 'user:email'
 end

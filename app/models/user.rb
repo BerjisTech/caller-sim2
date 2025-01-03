@@ -1,9 +1,19 @@
-# frozen_string_literal: true
-
+# app/models/user.rb
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
+         :confirmable, :lockable, :timeoutable, :trackable,
+         :omniauthable, omniauth_providers: %i[google_oauth2 github],
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  # Add method to handle OAuth data
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.first_name = auth.info.first_name || auth.info.name.split(' ').first
+      user.last_name = auth.info.last_name || auth.info.name.split(' ').last
+      user.skip_confirmation! # Skip confirmation email
+    end
+  end
 end
