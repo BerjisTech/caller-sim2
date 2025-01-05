@@ -1,9 +1,8 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :timeoutable, :trackable,
-         :omniauthable, omniauth_providers: %i[google_oauth2 github],
-         :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable,
+         :timeoutable, :trackable, :omniauthable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist, omniauth_providers: %i[google_oauth2 github]
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

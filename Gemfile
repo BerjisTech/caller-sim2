@@ -52,8 +52,8 @@ gem 'devise-jwt'
 gem 'jsonapi-serializer'
 gem 'jwt'
 gem 'msgpack'
-gem 'omniauth-google-oauth2'
 gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection' # For security
 
 gem 'mutex_m', '~> 0.2.0'

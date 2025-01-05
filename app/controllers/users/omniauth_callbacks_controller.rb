@@ -1,20 +1,23 @@
+# frozen_string_literal: true
+
 # app/controllers/users/omniauth_callbacks_controller.rb
-class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+module Users
+  class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     respond_to :json
-    
+
     def google_oauth2
-      handle_auth("Google")
+      handle_auth('Google')
     end
-  
+
     def github
-      handle_auth("Github")
+      handle_auth('Github')
     end
-  
+
     private
-  
+
     def handle_auth(kind)
-      @user = User.from_omniauth(request.env["omniauth.auth"])
-      
+      @user = User.from_omniauth(request.env['omniauth.auth'])
+
       if @user.persisted?
         sign_in @user
         render json: {
@@ -28,14 +31,15 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         }, status: :unprocessable_entity
       end
     end
-  
+
     def current_token
       request.env['warden-jwt_auth.token']
     end
-  
+
     def failure
       render json: {
-        status: { message: "Authentication failed." }
+        status: { message: 'Authentication failed.' }
       }, status: :unauthorized
     end
   end
+end
