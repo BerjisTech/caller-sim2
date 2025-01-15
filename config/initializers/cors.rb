@@ -19,10 +19,21 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*' # later change to the domain of the frontend app
-    resource '*',
+    origins ['http://localhost:8085',
+            'http://localhost:3006',
+            'http://localhost:3008', 
+            'http://localhost:8089',
+            'https://nichapie.com']
+
+    resource '/api/*',
              headers: :any,
              methods: %i[get post put patch delete options head],
-             expose: [:Authorization]
+             expose: ['Authorization']
+
+    resource '/users/*',
+             headers: :any,
+             methods: %i[get post put patch delete options head],
+             expose: ['Authorization'],
+             credentials: true
   end
 end

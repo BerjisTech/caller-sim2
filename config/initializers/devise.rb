@@ -327,12 +327,14 @@ Devise.setup do |config|
                   ENV['GOOGLE_CLIENT_SECRET'],
                   {
                     scope: 'email,profile',
-                    prompt: 'select_account'
+                    prompt: 'select_account',
+                    callback_url: "#{ENV['API_URL']}/users/auth/google_oauth2/callback"
                   }
 
   # GitHub configuration
   config.omniauth :github,
                   ENV['GITHUB_CLIENT_ID'],
                   ENV['GITHUB_CLIENT_SECRET'],
-                  scope: 'user:email'
+                  scope: 'user:email',
+                  callback_url: "#{ENV['API_URL']}/users/auth/github/callback"
 end
