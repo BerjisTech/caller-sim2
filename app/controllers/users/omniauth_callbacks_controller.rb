@@ -13,6 +13,14 @@ module Users
       handle_auth('Github')
     end
 
+    def passthru
+      # This method is used to trigger OmniAuth's authentication flow
+      # The actual redirection is handled by OmniAuth middleware
+      render status: 404, json: {
+        status: { message: "Not found. Authentication passthru." }
+      }
+    end
+
     private
 
     def handle_auth(kind)
@@ -40,6 +48,11 @@ module Users
       render json: {
         status: { message: 'Authentication failed.' }
       }, status: :unauthorized
+    end
+
+    # Optional: Add error handling for OmniAuth failures
+    def after_omniauth_failure_path_for(scope)
+      failure_path
     end
   end
 end

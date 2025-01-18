@@ -11,17 +11,35 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
-  devise_for :users, path: '', path_names: {
-                                 sign_in: 'login',
-                                 sign_out: 'logout',
-                                 registration: 'signup'
-                               },
-                     controllers: {
-                       sessions: 'users/sessions',
-                       registrations: 'users/registrations',
-                       omniauth_callbacks: 'users/omniauth_callbacks'
-                     }
+  devise_for :users, 
+    path: '', 
+    path_names: {
+      sign_in: 'login',
+      sign_out: 'logout',
+      registration: 'signup'
+    },
+    controllers: {
+      sessions: 'users/sessions',
+      registrations: 'users/registrations',
+      omniauth_callbacks: 'users/omniauth_callbacks'
+    },
+    defaults: { format: :json },
+    skip: [:omniauth_callbacks] 
 
+    # Add this devise_scope block
+    devise_scope :user do
+      # Initial OAuth routes
+      get '/auth/google_oauth2', to: 'users/omniauth_callbacks#google_oauth2', as: :user_google_oauth2_omniauth_authorize
+      get '/auth/github', to: 'users/omniauth_callbacks#github', as: :user_github_omniauth_authorize
+      
+      # Callback routes
+      get '/auth/google_oauth2/callback', to: 'users/omniauth_callbacks#google_oauth2', as: :user_google_oauth2_omniauth_callback
+      get '/auth/github/callback', to: 'users/omniauth_callbacks#github', as: :user_github_omniauth_callback
+      
+      # Failure route
+      get '/auth/failure', to: 'users/omniauth_callbacks#failure'
+    end
+    
   resources :profiles, only: %i[index show create update destroy]
   resources :rooms, only: %i[index create show] do
     member do
