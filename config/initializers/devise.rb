@@ -330,7 +330,8 @@ Devise.setup do |config|
                     prompt: 'select_account',
                     access_type: 'offline',
                     callback_url: "#{ENV['API_URL']}/auth/google_oauth2/callback",
-                    provider_ignores_state: true
+                    skip_jwt: true,
+                    # provider_ignores_state: true
                   }
 
   # GitHub configuration
@@ -340,6 +341,7 @@ Devise.setup do |config|
                   {
                     scope: 'user:email',
                     callback_url: "#{ENV['API_URL']}/auth/github/callback",
-                    provider_ignores_state: true
+                    skip_jwt: true,
+                    # provider_ignores_state: true
                   }
 end

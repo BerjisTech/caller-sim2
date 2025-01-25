@@ -26,6 +26,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             prompt: 'select_account',
             access_type: 'online',
             name: 'google',
+            skip_jwt: true,
             callback_url: "#{ENV['API_URL']}/auth/google_oauth2/callback",
           }
 
@@ -35,6 +36,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
           {
             scope: 'user:email',
             name: 'github',
+            skip_jwt: true,
             callback_url: "#{ENV['API_URL']}/auth/github/callback",
         }
 end
