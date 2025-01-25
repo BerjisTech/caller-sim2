@@ -24,8 +24,20 @@ module Users
     private
 
     def handle_auth(kind)
-      @user = User.from_omniauth(request.env['omniauth.auth'])
-
+      Rails.logger.info "Request ENV: #{request.env.inspect}"
+      auth = request.env['omniauth.auth']
+      Rails.logger.info "OmniAuth Auth Object: #{auth.inspect}"
+    
+      if auth.nil?
+        Rails.logger.error "OmniAuth authentication failed: Auth object is nil"
+        render json: {
+          status: { message: "Authentication failed. No data received from #{kind}." }
+        }, status: :unprocessable_entity
+        return
+      end
+    
+      @user = User.from_omniauth(auth)
+    
       if @user.persisted?
         sign_in @user
         render json: {
@@ -40,14 +52,15 @@ module Users
       end
     end
 
-    def current_token
-      request.env['warden-jwt_auth.token']
-    end
-
     def failure
+      Rails.logger.error "OmniAuth authentication failed: #{params[:message]}"
       render json: {
         status: { message: 'Authentication failed.' }
       }, status: :unauthorized
+    end
+
+    def current_token
+      request.env['warden-jwt_auth.token']
     end
 
     # Optional: Add error handling for OmniAuth failures

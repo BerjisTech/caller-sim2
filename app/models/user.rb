@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :timeoutable, :trackable, :omniauthable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist, omniauth_providers: %i[google_oauth2 github]
 
   def self.from_omniauth(auth)
+    raise ArgumentError, "Auth object is nil" if auth.nil?
+    
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
