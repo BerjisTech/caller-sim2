@@ -20,16 +20,16 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins ['http://localhost:8085',
-            'http://localhost:3006',
-            'http://localhost:3008', 
-            'http://localhost:8089',
-            'https://nichapie.com']
+             'http://localhost:3006',
+             'http://localhost:3008',
+             'http://localhost:8089',
+             'https://nichapie.com']
 
     resource '*',
-            headers: :any,
-            methods: %i[get post put patch delete options head],
-            expose: ['Authorization'],
-            credentials: true,
-            max_age: 600
+             headers: :any,
+             methods: %i[get post put patch delete options head],
+             expose: ['Authorization'],
+             credentials: true,
+             max_age: 600
   end
 end

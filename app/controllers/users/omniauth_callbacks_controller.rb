@@ -17,7 +17,7 @@ module Users
       # This method is used to trigger OmniAuth's authentication flow
       # The actual redirection is handled by OmniAuth middleware
       render status: 404, json: {
-        status: { message: "Not found. Authentication passthru." }
+        status: { message: 'Not found. Authentication passthru.' }
       }
     end
 
@@ -51,7 +51,7 @@ module Users
     end
 
     # Optional: Add error handling for OmniAuth failures
-    def after_omniauth_failure_path_for(scope)
+    def after_omniauth_failure_path_for(_scope)
       failure_path
     end
   end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # config/initializers/omniauth.rb
 require 'omniauth-google-oauth2'
 require 'omniauth-github'
 
 OmniAuth.config.logger = Rails.logger
-OmniAuth.config.allowed_request_methods = [:post, :get]
+OmniAuth.config.allowed_request_methods = %i[post get]
 OmniAuth.config.silence_get_warning = true
 
 # Optional: Add state validation (recommended for security)
