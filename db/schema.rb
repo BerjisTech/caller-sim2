@@ -177,7 +177,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_194338) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "jti", default: "", null: false
+    t.string "jti", default: -> { "gen_random_uuid()" }, null: false
     t.string "first_name"
     t.string "last_name"
     t.string "phone_number"
