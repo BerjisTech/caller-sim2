@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable,
          :timeoutable, :trackable, :omniauthable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist, omniauth_providers: %i[google_oauth2 github]
 
+  before_create :set_jti
+
+ 
   def self.from_omniauth(auth)
     raise ArgumentError, "Auth object is nil" if auth.nil?
     
@@ -14,5 +17,12 @@ class User < ApplicationRecord
       user.last_name = auth.info.last_name || auth.info.name.split(' ').last
       user.skip_confirmation!
     end
+  end
+
+
+  private
+
+  def set_jti
+    self.jti ||= SecureRandom.uuid
   end
 end
