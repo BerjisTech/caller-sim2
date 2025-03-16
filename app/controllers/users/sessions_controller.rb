@@ -27,8 +27,21 @@ module Users
     # end
     include RackSessionsFix
     respond_to :json
+    before_action :configure_sign_in_params, only: [:create]
 
     private
+
+    def create
+      self.resource = warden.authenticate!(auth_options)
+      sign_in(resource_name, resource)
+      render json: {
+        status: {
+          code: 200,
+          message: 'Logged in successfully.',
+          data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] }
+        }
+      }, status: :ok
+    end
 
     def respond_with(current_user, _opts = {})
       render json: {
@@ -57,6 +70,12 @@ module Users
           message: "Couldn't find an active session."
         }, status: :unauthorized
       end
+    end
+
+    protected
+    # Permit the email and password parameters for sign in
+    def configure_sign_in_params
+      devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password])
     end
   end
 end
