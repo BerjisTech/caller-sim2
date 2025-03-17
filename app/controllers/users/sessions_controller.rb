@@ -31,28 +31,31 @@ module Users
 
     private
 
-    def create
-      self.resource = warden.authenticate!(auth_options)
-      sign_in(resource_name, resource)
-      token = JsonWebToken.encode(sub: resource.id)
-      
-      render json: {
-        status: {
-          code: 200,
-          message: 'Logged in successfully.',
-          data: { 
-            user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
-            token: token
-          }
-        }
-      }, status: :ok
-    end
+    # def create
+    #   self.resource = warden.authenticate!(auth_options)
+    #   sign_in(resource_name, resource)
+    #   token = JsonWebToken.encode(sub: resource.id)
+
+    #   render json: {
+    #     status: {
+    #       code: 200,
+    #       message: 'Logged in successfully.',
+    #       data: { 
+    #         user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+    #         token: token
+    #       }
+    #     }
+    #   }, status: :ok
+    # end
 
     def respond_with(current_user, _opts = {})
+      token = JsonWebToken.encode(sub: current_user.id)
+      response.set_header('Authorization', token)
+
       render json: {
         status: {
           code: 200, message: 'Logged in successfully.',
-          data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes] }
+          data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes], token: token }
         }
       }, status: :ok
     end
