@@ -38,7 +38,10 @@ module Users
         status: {
           code: 200,
           message: 'Logged in successfully.',
-          data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] }
+          data: { 
+            user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+            token: token
+          }
         }
       }, status: :ok
     end
