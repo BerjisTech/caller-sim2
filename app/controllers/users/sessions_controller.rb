@@ -34,6 +34,8 @@ module Users
     def create
       self.resource = warden.authenticate!(auth_options)
       sign_in(resource_name, resource)
+      token = JsonWebToken.encode(sub: resource.id)
+      
       render json: {
         status: {
           code: 200,
@@ -55,22 +57,31 @@ module Users
       }, status: :ok
     end
 
+    # app/controllers/users/sessions_controller.rb
     def respond_to_on_destroy
-      if request.headers['Authorization'].present?
-        jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last,
-                                 Rails.application.credentials.devise_jwt_secret_key!).first
-        current_user = User.find(jwt_payload['sub'])
-      end
+      current_user = nil
+      jwt_payload = nil
 
+      token = request.headers['Authorization']&.split(' ')&.last
+
+      begin
+        jwt_payload = JWT.decode(
+          token,
+          Rails.application.credentials.devise_jwt_secret_key!
+        ).first if token
+        
+        current_user = User.find(jwt_payload['sub']) if jwt_payload
+        current_user&.invalidate_jwt(token) # Add token to denylist
+      rescue JWT::DecodeError, ActiveRecord::RecordNotFound => e
+        Rails.logger.error "Logout error: #{e.message}"
+      end
+    
       if current_user
-        render json: {
-          status: 200,
-          message: 'Logged out successfully.'
-        }, status: :ok
+        render json: { status: 200, message: 'Logged out successfully.' }
       else
-        render json: {
+        render json: { 
           status: 401,
-          message: "Couldn't find an active session."
+          message: "Couldn't find an active session." 
         }, status: :unauthorized
       end
     end
