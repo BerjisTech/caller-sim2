@@ -44,17 +44,36 @@ module Users
         if @user.persisted?
           # Generate JWT token
           token = JsonWebToken.encode(sub: @user.id)
-          
+
           sign_in @user
-          
-          render json: {
-            status: { 
-              code: 200, 
-              message: "Signed in successfully with #{kind}." 
+
+          # Prepare payload for popup callback
+          payload = {
+            status: {
+              code: 200,
+              message: "Signed in successfully with #{kind}."
             },
             data: UserSerializer.new(@user).serializable_hash[:data][:attributes],
             token: token
           }
+
+          # Render JavaScript to post message to opener window and close popup
+          html = <<-HTML
+            <!DOCTYPE html>
+            <html>
+            <head><meta charset="utf-8"><title>Authentication successful</title></head>
+            <body>
+              <script type="text/javascript">
+                (function() {
+                  window.opener.postMessage({ type: 'oauth-response', response: #{payload.to_json} }, '*');
+                  window.close();
+                })();
+              </script>
+            </body>
+            </html>
+          HTML
+
+          render html: html.html_safe
         else
           Rails.logger.error "Failed to persist user: #{@user.errors.full_messages}"
           render json: {
